@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AU iPhone Simulator - Fanfic Phone</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            background-color: #0f172a;
+        }
+        /* Custom Scrollbar for Phone Container */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* iOS Glassmorphism */
+        .ios-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        /* Active indicator tick animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-pop {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 text-slate-800">
+
+    <!-- ========================================================================= -->
+    <!-- FRAME SIMULATOR IPHONE -->
+    <!-- ========================================================================= -->
+    <div id="iphone-frame" class="relative w-full max-w-[412px] h-[100vh] sm:h-[840px] bg-black sm:rounded-[50px] shadow-2xl border-0 sm:border-[10px] border-slate-800 overflow-hidden flex flex-col justify-between">
+        
+        <!-- STATUS BAR & DYNAMIC ISLAND -->
+        <div class="absolute top-0 left-0 right-0 z-50 px-6 pt-3 pb-2 flex justify-between items-center text-white text-xs font-semibold pointer-events-none">
+            <!-- Dynamic Island Notch -->
+            <div class="absolute top-2 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full flex items-center justify-between px-2.5 shadow-md">
+                <div class="w-2.5 h-2.5 rounded-full bg-slate-900 border border-slate-800"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-blue-950/40 flex items-center justify-center">
+                    <div class="w-1 h-1 bg-blue-500 rounded-full"></div>
+                </div>
+            </div>
+            <!-- Clock -->
+            <span id="status-clock" class="z-10 pl-1 text-[13px] tracking-tight">15:11</span>
+            <!-- System Icons -->
+            <div class="z-10 flex items-center gap-1.5 text-[11px]">
+                <span class="text-[10px] font-bold tracking-tighter">5G</span>
+                <i class="fa-solid fa-signal text-[10px]"></i>
+                <i class="fa-solid fa-battery-three-quarters text-[13px]"></i>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- SCREEN CONTENT CONTAINER (ALL APPS LIVE HERE) -->
+        <!-- ========================================================================= -->
+        <div id="screen-container" class="relative w-full h-full pt-10 pb-6 overflow-hidden bg-slate-900">
+
+            <!-- ----------------------------------------------------------------- -->
+            <!-- 1. HOME SCREEN (LOCK / APP GRID) -->
+            <!-- ----------------------------------------------------------------- -->
+            <div id="app-home" class="app-screen absolute inset-0 pt-10 pb-16 px-4 flex flex-col justify-between bg-cover bg-center text-white no-scrollbar overflow-y-auto" style="background-image: linear-gradient(to bottom, rgba(15,23,42,0.3), rgba(15,23,42,0.6)), url('https://i.pinimg.com/736x/4d/2e/c2/4d2ec2ed38201ed2618a9cd44c92b758.jpg');">
+                
+                <!-- WIDGETS TOP SECTION -->
+                <div class="space-y-3 mt-2">
+                    <!-- Weather & Calendar Widget Row -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <!-- Weather Widget -->
+                        <div class="bg-white/20 ios-blur p-3.5 rounded-2xl flex flex-col justify-between h-32 border border-white/20 shadow-lg">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[11px] font-medium text-white/80 uppercase tracking-wider">Jakarta</p>
+                                    <p class="text-2xl font-bold">30°</p>
+                                </div>
+                                <i class="fa-solid fa-sun text-amber-300 text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium">Cerah Berawan</p>
+                                <p class="text-[10px] text-white/70">H:32° L:24°</p>
+                            </div>
+                        </div>
+
+                        <!-- Calendar Widget (Ultah Pacar Highlighted!) -->
+                        <div class="bg-white/20 ios-blur p-3.5 rounded-2xl flex flex-col justify-between h-32 border border-white/20 shadow-lg">
+                            <div class="flex justify-between items-center text-red-400 font-bold text-xs uppercase tracking-wider">
+                                <span>OKTOBER</span>
+                                <i class="fa-solid fa-heart text-pink-400 text-xs"></i>
+                            </div>
+                            <div class="text-center my-auto">
+                                <span class="text-3xl font-extrabold text-white">9</span>
+                                <p class="text-[11px] font-semibold text-pink-200 truncate mt-0.5">🎂 Ultah Pacar!</p>
+                            </div>
+                            <p class="text-[9px] text-white/70 text-center">Jangan lupa kado & kue ❤️</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAIN APPS GRID -->
+                <div class="grid grid-cols-4 gap-y-5 gap-x-3 px-1 my-auto pt-4">
+                    <!-- WhatsApp -->
+                    <button onclick="openApp('whatsapp')" class="flex flex-col items-center gap-1 group">
+                        <div class="w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg relative group-active:scale-95 transition">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            <span id="wa-home-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900">2</span>
+                        </div>
+                        <span class="text-[11px] font-medium tracking-tight text-white drop-shadow">WhatsApp</span>
+                    </button>
+
+                    <!-- Instagram -->
+                    <button onclick="openApp('instagram')" class="flex flex-col items-center gap-1 group">
+                        <div class="w-14 h-14 bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg group-active:scale-95 transition">
+                            <i class="fa-brands fa-instagram"></i>
+                        </div>
+                        <span class="text-[11px] font-medium tracking-tight text-white drop-shadow">Instagram</span>
+                    </button>
+
+                    <!-- Twitter / X -->
+                    <button onclick="openApp('twitter')" class="flex flex-col items-center gap-1 group">
+                        <div class="w-14 h-14 bg-black border border-slate-700 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg group-active:scale-95 transition">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </div>
+                        <span class="text-[11px] font-medium tracking-tight text-white drop-shadow">X</span>
+                    </button>
+
+                    <!-- Galeri -->
+                    <button onclick="openApp('gallery')" class="flex flex-col items-center gap-1 group">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-amber-500 text-2xl shadow-lg group-active:scale-95 transition overflow-hidden p-2">
+                            <i class="fa-solid fa-images text-slate-800"></i>
+                        </div>
+                        <span class="text-[11px] font-medium tracking-tight text-white drop-shadow">Galeri</span>
+                    </button>
+
+                    <!-- Jam / Alarm -->
+                    <button onclick="openApp('alarm')" class="flex flex-col items-center gap-1 group">
+                        <div class="w-14 h-14 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center text-amber-500 text-2xl shadow-lg group-active:scale-95 transition">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <span class="text-[11px] font-medium tracking-tight text-white drop-shadow">Jam</span>
+                    </button>
+
+                    <!-- Kamera -->
+                    <button onclick="openApp('camera')" class="flex flex-col items-center gap-1 group">
+                        <div class="w-14 h-14 bg-gradient-to-b from-slate-300 to-slate-400 rounded-2xl flex items-center justify-center text-slate-800 text-2xl shadow-lg group-active:scale-95 transition">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        <span class="text-[11px] font-medium tracking-tight text-white drop-shadow">Kamera</span>
+                    </button>
+
+                    <!-- YouTube -->
+                    <button onclick="openApp('youtube')" class="flex flex-col items-center gap-1 group">
+                        <div class="w-14 h-14 bg-red-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg group-active:scale-95 transition">
+                            <i class="fa-brands fa-youtube"></i>
+                        </div>
+                        <span class="text-[11px] font-medium tracking-tight text-white drop-shadow">YouTube</span>
+                    </button>
+
+                    <!-- Notes -->
+                    <button onclick="openApp('notes')" class="flex flex-col items-center gap-1 group">
+                        <div class="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 text-2xl shadow-lg group-active:scale-95 transition">
+                            <i class="fa-solid fa-note-sticky"></i>
+                        </div>
+                        <span class="text-[11px] font-medium tracking-tight text-white drop-shadow">Notes</span>
+                    </button>
+                </div>
+
+                <!-- DOCK (BOTTOM FAVORITES) -->
+                <div class="bg-white/20 ios-blur p-2.5 rounded-3xl grid grid-cols-4 gap-3 border border-white/20 shadow-2xl mb-2">
+                    <button onclick="openApp('whatsapp')" class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white text-2xl shadow mx-auto">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </button>
+                    <button onclick="openApp('instagram')" class="w-12 h-12 bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow mx-auto">
+                        <i class="fa-brands fa-instagram"></i>
+                    </button>
+                    <button onclick="openApp('camera')" class="w-12 h-12 bg-slate-300 rounded-2xl flex items-center justify-center text-slate-800 text-2xl shadow mx-auto">
+                        <i class="fa-solid fa-camera"></i>
+                    </button>
+                    <button onclick="openApp('notes')" class="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 text-2xl shadow mx-auto">
+                        <i class="fa-solid fa-note-sticky"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ----------------------------------------------------------------- -->
+            <!-- 2. WHATSAPP APP (Matches Image 2 Reference) -->
+            <!-- ----------------------------------------------------------------- -->
+            <div id="app-whatsapp" class="app-screen absolute inset-0 bg-white hidden flex-col z-20">
+                <!-- WHATSAPP HOME / CHAT LIST VIEW -->
+                <div id="wa-list-view" class="flex flex-col h-full">
+                    <!-- Top Header -->
+                    <div class="px-4 pt-3 pb-2 flex justify-between items-center border-b border-slate-100">
+                        <button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-xs">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                        <h1 class="text-2xl font-bold text-slate-900">Chat</h1>
+                        <div class="flex items-center gap-3 text-slate-800 text-lg">
+                            <i class="fa-solid fa-camera"></i>
+                            <i class="fa-solid fa-circle-plus text-emerald-500 text-xl"></i>
+                        </div>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="px-4 my-2">
+                        <div class="bg-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2 text-slate-500 text-sm">
+                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                            <span class="text-xs">Tanya Meta AI atau Cari</span>
+                        </div>
+                    </div>
+
+                    <!-- Category Filter Pills -->
+                    <div class="px-4 flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 text-xs">
+                        <span class="px-3 py-1.5 bg-emerald-100 text-emerald-800 font-semibold rounded-full">Semua</span>
+                        <span class="px-3 py-1.5 bg-slate-100 text-slate-600 font-medium rounded-full">Belum Dibaca</span>
+                        <span class="px-3 py-1.5 bg-slate-100 text-slate-600 font-medium rounded-full">Favorit</span>
+                        <span class="px-3 py-1.5 bg-slate-100 text-slate-600 font-medium rounded-full">Grup</span>
+                    </div>
+
+                    <!-- Chat Items List (Matching Image 2) -->
+                    <div id="wa-chat-items" class="flex-1 overflow-y-auto no-scrollbar divide-y divide-slate-50">
+                        <!-- Content auto-rendered by JS -->
+                    </div>
+
+                    <!-- WhatsApp Bottom Bar -->
+                    <div class="border-t border-slate-100 px-6 py-2 flex justify-between items-center text-slate-500 text-[10px]">
+                        <div class="flex flex-col items-center gap-0.5">
+                            <i class="fa-solid fa-circle-notch text-lg"></i>
+                            <span>Pembaruan</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-0.5">
+                            <i class="fa-solid fa-phone text-lg"></i>
+                            <span>Panggilan</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-0.5">
+                            <i class="fa-solid fa-users text-lg"></i>
+                            <span>Komunitas</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-0.5 text-emerald-600 font-bold">
+                            <i class="fa-solid fa-comment text-lg"></i>
+                            <span>Chat</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-0.5">
+                            <i class="fa-solid fa-gear text-lg"></i>
+                            <span>Pengaturan</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WHATSAPP LIVE CHAT ROOM VIEW (INTERACTIVE AU ENGINE) -->
+                <div id="wa-room-view" class="hidden flex-col h-full bg-[#efeae2] relative">
+                    <!-- Chat Header -->
+                    <div class="bg-slate-100 px-3 py-2 flex items-center justify-between border-b border-slate-200 shadow-sm z-10">
+                        <div class="flex items-center gap-2">
+                            <button onclick="closeWaChat()" class="text-blue-500 text-lg pr-1">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                            <img id="wa-room-avatar" src="" class="w-9 h-9 rounded-full object-cover border">
+                            <div>
+                                <h2 id="wa-room-name" class="text-sm font-bold text-slate-900 leading-tight"></h2>
+                                <p id="wa-room-status" class="text-[10px] text-emerald-600 font-medium">online</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-slate-700 text-base">
+                            <i class="fa-solid fa-video text-sm"></i>
+                            <i class="fa-solid fa-phone text-sm"></i>
+                        </div>
+                    </div>
+
+                    <!-- Chat Body Area -->
+                    <div id="wa-messages-container" class="flex-1 p-3 overflow-y-auto space-y-2 no-scrollbar">
+                        <!-- Messages dynamically injected here -->
+                    </div>
+
+                    <!-- Guided Live Typing Input Bar -->
+                    <div class="bg-slate-100 p-2 border-t border-slate-200 flex items-center gap-2">
+                        <button class="text-slate-500 text-lg px-1"><i class="fa-solid fa-plus"></i></button>
+                        
+                        <!-- Interactive Input Field -->
+                        <div class="flex-1 bg-white rounded-full px-3 py-1.5 border border-slate-300 flex items-center">
+                            <input id="wa-chat-input" type="text" placeholder="Sentuh / Ketik untuk membalas..." readonly 
+                                   onclick="handleChatInputClick()" 
+                                   class="w-full text-xs outline-none bg-transparent cursor-pointer text-slate-800 font-medium">
+                        </div>
+
+                        <!-- Camera & Send Button -->
+                        <button class="text-slate-500 text-base px-1"><i class="fa-solid fa-camera"></i></button>
+                        <button id="wa-send-btn" onclick="sendGuidedMessage()" class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow hover:bg-emerald-600 transition">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ----------------------------------------------------------------- -->
+            <!-- 3. INSTAGRAM APP (Matches Image 1 Reference) -->
+            <!-- ----------------------------------------------------------------- -->
+            <div id="app-instagram" class="app-screen absolute inset-0 bg-white hidden flex-col z-20 overflow-y-auto no-scrollbar">
+                <!-- Header -->
+                <div class="px-4 py-2 flex justify-between items-center border-b border-slate-100 sticky top-0 bg-white z-10">
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-chevron-left text-sm text-slate-700 mr-2" onclick="closeApp()"></i>
+                        <span id="ig-handle-title" class="font-bold text-base text-slate-900">stella.kim</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-500"></i>
+                    </div>
+                    <div class="flex items-center gap-4 text-lg text-slate-800">
+                        <i class="fa-solid fa-ellipsis"></i>
+</div>
+                    </div>
+
+                <!-- Profile Info -->
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <img id="ig-avatar" src="" class="w-20 h-20 rounded-full object-cover border-2 border-slate-200">
+                        <div class="flex-1 flex justify-around text-center ml-4">
+                            <div>
+                                <p id="ig-posts-count" class="font-bold text-sm text-slate-900">6</p>
+                                <p class="text-xs text-slate-500">postingan</p>
+                            </div>
+                            <div>
+                                <p id="ig-followers-count" class="font-bold text-sm text-slate-900">2188</p>
+                                <p class="text-xs text-slate-500">pengikut</p>
+                            </div>
+                            <div>
+                                <p id="ig-following-count" class="font-bold text-sm text-slate-900">631</p>
+                                <p class="text-xs text-slate-500">mengikuti</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Story Highlights -->
+                    <div class="flex items-center gap-4 overflow-x-auto no-scrollbar pb-2">
+                        <div class="flex flex-col items-center gap-1">
+                            <div class="w-14 h-14 rounded-full p-0.5 border-2 border-slate-300">
+                                <img id="ig-hl1-img" src="" class="w-full h-full rounded-full object-cover">
+                            </div>
+                            <span class="text-[10px] text-slate-700 font-medium">NY</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1">
+                            <div class="w-14 h-14 rounded-full p-0.5 border-2 border-slate-300">
+                                <img id="ig-hl2-img" src="" class="w-full h-full rounded-full object-cover">
+                            </div>
+                            <span class="text-[10px] text-slate-700 font-medium">💋</span>
+                        </div>
+                    </div>
+                </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-7 gap-2 mb-4 text-xs font-semibold">
+                        <button class="col-span-3 py-1.5 bg-slate-100 rounded-lg border border-slate-200 text-slate-800">Edit profil</button>
+                        <button class="col-span-3 py-1.5 bg-slate-100 rounded-lg border border-slate-200 text-slate-800">Bagikan profil</button>
+                        <button class="col-span-1 py-1.5 bg-slate-100 rounded-lg border border-slate-200 text-slate-800 flex items-center justify-center">
+                            <i class="fa-solid fa-user-plus text-slate-700"></i>
+                        </button>
+                    </div>
+
+                <!-- Tabs (Grid, Reels, Tagged) -->
+                <div class="border-t border-slate-200 grid grid-cols-3 text-center text-slate-500 text-lg">
+                    <button class="py-2.5 border-b-2 border-slate-900 text-slate-900"><i class="fa-solid fa-table-cells"></i></button>
+                    <button class="py-2.5"><i class="fa-solid fa-clapperboard"></i></button>
+                    <button class="py-2.5"><i class="fa-regular fa-id-badge"></i></button>
+                </div>
+
+                <!-- Photo Grid (6 Posts as requested) -->
+                <div id="ig-photo-grid" class="grid grid-cols-3 gap-0.5 bg-slate-100">
+                    <!-- Populated dynamically -->
+                </div>
+
+                                       <!-- Layar Postingan Instagram (Halaman Full Custom) -->
+    <div id="ig-lightbox" class="hidden absolute inset-0 w-full h-full bg-black z-50 flex-col overflow-y-auto text-white">
+        <!-- Top Nav Bar -->
+        <div class="flex items-center justify-between px-3 py-3 border-b border-zinc-800 sticky top-0 bg-black z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="closeIgLightbox()" class="text-white text-lg p-1">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <h3 class="font-bold text-base tracking-tight">Postingan</h3>
+            </div>
+            <i class="fa-solid fa-ellipsis-vertical text-white text-base pr-1"></i>
+        </div>
+
+        <!-- Post Header -->
+        <div class="flex items-center justify-between p-3">
+            <div class="flex items-center gap-2.5">
+                <img src="https://i.pinimg.com/736x/7a/11/be/7a11be33854cb79d0b451cceb46a821d.jpg" class="w-8 h-8 rounded-full object-cover border border-zinc-700">
+                <div>
+                    <div class="flex items-center gap-1">
+                        <span class="font-semibold text-xs text-white">stella.kim</span>
+                    </div>
+                    <p class="text-[10px] text-zinc-400">Audio Asli</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-ellipsis text-white text-sm pr-1"></i>
+        </div>
+
+        <!-- Tempat Foto / Video -->
+        <div id="ig-modal-media-container" class="w-full bg-black flex items-center justify-center min-h-[300px]"></div>
+
+        <!-- Tombol Like & Caption -->
+        <div class="p-3">
+            <div class="flex justify-between items-center mb-2">
+                <div class="flex items-center gap-3 text-xs font-semibold">
+                    <span class="flex items-center gap-1 cursor-pointer"><i class="fa-regular fa-heart text-base"></i> 22RB</span>
+                    <span class="flex items-center gap-1 cursor-pointer"><i class="fa-regular fa-comment text-base"></i> 59</span>
+                    <span class="flex items-center gap-1 cursor-pointer"><i class="fa-solid fa-retweet text-base"></i> 1,2RB</span>
+                    <span class="flex items-center gap-1 cursor-pointer"><i class="fa-regular fa-paper-plane text-base"></i> 247</span>
+                </div>
+                <i class="fa-regular fa-bookmark text-base cursor-pointer"></i>
+            </div>
+            <p class="text-zinc-300 text-[11px] mb-1">Disukai oleh <span class="font-bold text-white">leean.j</span> dan <span class="font-bold text-white">lainnya</span></p>
+            <div class="text-xs text-white leading-relaxed mb-1">
+                <span class="font-bold mr-1.5">stella.kim</span>
+                <span>my daily life.... selengkapnya</span>
+            </div>
+            <p class="text-[10px] text-zinc-500 uppercase mt-2">8 OKTOBER 2026</p>
+        </div>
+    </div>
+            </div>
+
+            <!-- ----------------------------------------------------------------- -->
+            <!-- 4. JAM / ALARM APP (Matches Image 3 Reference) -->
+            <!-- ----------------------------------------------------------------- -->
+            <div id="app-alarm" class="app-screen absolute inset-0 bg-black text-white hidden flex-col z-20 justify-between">
+                <div class="p-4 flex-1">
+                    <!-- Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-2xl font-bold">Alarm</h1>
+                        <div class="flex items-center gap-4 text-lg">
+                            <i class="fa-solid fa-plus"></i>
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </div>
+                    </div>
+
+                    <!-- Alarms List (Matching Image 3) -->
+                    <div class="space-y-3">
+                        <!-- Alarm Item 1 -->
+                        <div class="bg-slate-900 p-4 rounded-2xl flex justify-between items-center border border-slate-800">
+                            <div>
+                                <span class="text-3xl font-light">06.55</span>
+                                <p class="text-[10px] text-slate-400 mt-1 tracking-widest">M S S R K J S</p>
+                            </div>
+                            <!-- Active Blue Toggle -->
+                            <div class="w-11 h-6 bg-blue-600 rounded-full p-1 flex items-center justify-end">
+                                <div class="w-4 h-4 bg-white rounded-full shadow"></div>
+                            </div>
+                        </div>
+
+                        <!-- Alarm Item 2 -->
+                        <div class="bg-slate-900 p-4 rounded-2xl flex justify-between items-center border border-slate-800">
+                            <div>
+                                <span class="text-3xl font-light">07.00</span>
+                                <p class="text-[10px] text-slate-400 mt-1 tracking-widest">M S S R K J S</p>
+                            </div>
+                            <div class="w-11 h-6 bg-blue-600 rounded-full p-1 flex items-center justify-end">
+                                <div class="w-4 h-4 bg-white rounded-full shadow"></div>
+                            </div>
+                        </div>
+
+                        <!-- Alarm Item 3 -->
+                        <div class="bg-slate-900 p-4 rounded-2xl flex justify-between items-center border border-slate-800">
+                            <div>
+                                <span class="text-3xl font-light">07.05</span>
+                                <p class="text-[10px] text-slate-400 mt-1 tracking-widest">M S S R K J S</p>
+                            </div>
+                            <div class="w-11 h-6 bg-blue-600 rounded-full p-1 flex items-center justify-end">
+                                <div class="w-4 h-4 bg-white rounded-full shadow"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation Tabs (Image 3) -->
+                <div class="border-t border-slate-800 py-3 px-6 flex justify-between items-center text-xs text-slate-500">
+                    <span class="text-blue-500 font-semibold border-b border-blue-500 pb-0.5">Alarm</span>
+                    <span>Jam Dunia</span>
+                    <span>Stopwatch</span>
+                    <span>Pewaktu</span>
+                </div>
+            </div>
+
+            <!-- ----------------------------------------------------------------- -->
+            <!-- 5. YOUTUBE APP (Matches Image 4 Reference) -->
+            <!-- ----------------------------------------------------------------- -->
+            <div id="app-youtube" class="app-screen absolute inset-0 bg-[#0f0f0f] text-white hidden flex-col z-20 justify-between">
+                <!-- Header -->
+                <div class="p-3 flex justify-between items-center">
+                    <div class="flex items-center gap-1 text-red-600 font-bold text-lg">
+                        <i class="fa-brands fa-youtube text-2xl"></i>
+                        <span class="text-white tracking-tighter text-base font-semibold">YouTube</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-slate-300 text-base">
+                        <i class="fa-regular fa-bell"></i>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+
+                <!-- Center Search Box & Play Icon -->
+                <div class="px-4 my-auto text-center space-y-4">
+                    <div class="w-16 h-12 bg-red-600 rounded-xl flex items-center justify-center mx-auto shadow-lg">
+                        <i class="fa-solid fa-play text-white text-xl"></i>
+                    </div>
+
+                    <div class="flex items-center gap-2 max-w-xs mx-auto">
+                        <div class="w-9 h-9 bg-slate-800 rounded-full flex items-center justify-center text-slate-400">
+                            <i class="fa-regular fa-compass"></i>
+                        </div>
+                        <div class="flex-1 bg-slate-800 rounded-full py-2 px-4 text-xs text-slate-400 text-left">
+                            Telusuri YouTube
+                        </div>
+                        <div class="w-9 h-9 bg-slate-800 rounded-full flex items-center justify-center text-slate-400">
+                            <i class="fa-solid fa-microphone"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card Info Notice (Matches Image 4) -->
+                    <div class="bg-[#212121] p-5 rounded-2xl text-center space-y-3 border border-slate-800 max-w-xs mx-auto">
+                        <h3 class="font-bold text-sm text-slate-100">Histori tontonan Anda tidak aktif</h3>
+                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                            Anda dapat mengubah setelan kapan saja untuk mendapatkan video terbaru yang disesuaikan untuk Anda. <span class="text-blue-400">Pelajari lebih lanjut</span>
+                        </p>
+                        <button class="w-full py-2 bg-slate-700/80 rounded-full text-xs font-semibold text-slate-200">Perbarui setelan</button>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation (Matches Image 4) -->
+                <div class="border-t border-slate-800 py-2 px-4 flex justify-between items-center text-[10px] text-slate-400">
+                    <div class="flex flex-col items-center gap-1 text-white">
+                        <i class="fa-solid fa-house text-base"></i>
+                        <span>Beranda</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-bolt text-base"></i>
+                        <span>Shorts</span>
+                    </div>
+                    <div class="text-2xl text-slate-200">
+                        <i class="fa-regular fa-square-plus"></i>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-layer-group text-base"></i>
+                        <span>Subscription</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-1">
+                        <div class="w-5 h-5 rounded-full bg-slate-700 overflow-hidden border">
+                            <img id="yt-user-avatar" src="" class="w-full h-full object-cover">
+                        </div>
+                        <span>Anda</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ----------------------------------------------------------------- -->
+            <!-- 6. TWITTER / X APP (Matches Image 5 Reference) -->
+            <!-- ----------------------------------------------------------------- -->
+            <div id="app-twitter" class="app-screen absolute inset-0 bg-white hidden flex-col z-20 overflow-y-auto no-scrollbar">
+                <!-- Banner Image Header -->
+                <div class="relative h-28 bg-sky-400">
+                    <img id="tw-banner-img" src="" class="w-full h-full object-cover">
+                    <!-- Top Buttons -->
+                    <div class="absolute top-3 left-3 right-3 flex justify-between text-white drop-shadow">
+                        <button onclick="closeApp()" class="w-7 h-7 rounded-full bg-black/40 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <div class="flex gap-2">
+                            <button class="w-7 h-7 rounded-full bg-black/40 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                            <button class="w-7 h-7 rounded-full bg-black/40 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Info Bar -->
+                <div class="px-4 relative pb-3 border-b border-slate-100">
+                    <div class="flex justify-between items-end -mt-10 mb-2">
+                        <img id="tw-avatar" src="" class="w-20 h-20 rounded-full border-4 border-white object-cover shadow">
+                        <button class="px-4 py-1.5 border border-slate-300 rounded-full font-bold text-xs text-slate-800">Edit profil</button>
+                    </div>
+                    <div>
+                        <h2 id="tw-name" class="font-extrabold text-lg text-slate-900 leading-tight">star_inistella</h2>
+                        <p id="tw-username" class="text-xs text-slate-500">@stel</p>
+                    </div>
+                </div>
+
+                <!-- Tabs (Matching Image 5) -->
+                <div class="flex border-b border-slate-100 text-xs font-semibold text-slate-500 overflow-x-auto no-scrollbar">
+                    <span class="px-4 py-3 text-slate-900 border-b-2 border-sky-500 font-bold whitespace-nowrap">Postingan</span>
+                    <span class="px-4 py-3 whitespace-nowrap">Balasan</span>
+                    <span class="px-4 py-3 whitespace-nowrap">Sorotan</span>
+                    <span class="px-4 py-3 whitespace-nowrap">Artikel</span>
+                    <span class="px-4 py-3 whitespace-nowrap">Media</span>
+                </div>
+
+                <!-- Main Tweet Feed (Matching Image 5) -->
+                <div class="p-3 space-y-3">
+                    <div class="flex gap-2 border-b border-slate-100 pb-3">
+                        <img id="tw-tweet-avatar" src="" class="w-9 h-9 rounded-full object-cover">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-1 text-xs">
+                                <span id="tw-tweet-name" class="font-bold text-slate-900">star_inistella</span>
+                                <span id="tw-tweet-user" class="text-slate-500">@stel</span>
+                                <span class="text-slate-400">· 08/04/2026</span>
+                            </div>
+                            <p id="tw-tweet-text" class="text-xs text-slate-800 mt-1">Gemes bgt pacar aku😊</p>
+
+                            <!-- Tweet Image Attachment -->
+                            <div class="mt-2 rounded-2xl overflow-hidden border border-slate-200">
+                                <img id="tw-tweet-img" src="" class="w-full max-h-72 object-cover">
+                            </div>
+
+                            <!-- Tweet Action Metrics (Matching Image 5) -->
+                            <div class="flex justify-between items-center text-slate-500 text-xs mt-3 pr-2">
+                                <div class="flex items-center gap-1"><i class="fa-regular fa-comment"></i> <span>11</span></div>
+                                <div class="flex items-center gap-1"><i class="fa-solid fa-retweet"></i> <span>7</span></div>
+                                <div class="flex items-center gap-1"><i class="fa-regular fa-heart"></i> <span>33</span></div>
+                                <div class="flex items-center gap-1"><i class="fa-solid fa-chart-simple"></i> <span>59</span></div>
+                                <i class="fa-regular fa-bookmark"></i>
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ----------------------------------------------------------------- -->
+            <!-- 7. GALERI APP -->
+            <!-- ----------------------------------------------------------------- -->
+            <div id="app-gallery" class="app-screen absolute inset-0 bg-white hidden flex-col z-20 overflow-y-auto no-scrollbar">
+                <div class="p-4 border-b border-slate-100 sticky top-0 bg-white z-10 flex justify-between items-center">
+                    <h1 class="text-xl font-bold text-slate-900">Foto</h1>
+                    <i class="fa-solid fa-chevron-left text-slate-600" onclick="closeApp()"></i>
+                </div>
+                <div class="p-2">
+                    <p class="text-xs font-bold text-slate-400 mb-2 px-1">Koleksi Kenangan</p>
+                    <div id="gallery-grid" class="grid grid-cols-3 gap-1">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+                <!-- Layar Modal Foto Penuh (Bisa Digeser & Ada Timestamp) -->
+<div id="gallery-lightbox" class="hidden absolute inset-0 bg-black z-50 flex flex-col justify-between p-4 text-white">
+    <!-- Header: Tombol Back & Timestamp -->
+    <div class="flex justify-between items-center pt-8 px-2 z-20">
+        <button onclick="closeGalleryLightbox()" class="text-white text-xl p-2 hover:opacity-70">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="text-center">
+            <p id="lightbox-date" class="text-xs font-semibold">21 Okt 2026</p>
+            <p id="lightbox-time" class="text-[10px] text-slate-400">18:30</p>
+        </div>
+        <div class="w-8"></div>
+    </div>
+
+    <!-- Area Display Foto & Geser -->
+    <div class="relative flex-1 flex items-center justify-center my-auto overflow-hidden" id="lightbox-swipe-area">
+        <button onclick="prevGalleryPhoto()" class="absolute left-2 text-white/70 hover:text-white bg-black/40 w-9 h-9 rounded-full flex items-center justify-center z-10">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        
+        <img id="lightbox-img" src="" class="max-h-[70vh] max-w-full object-contain transition-all duration-200 shadow-2xl">
+        
+        <button onclick="nextGalleryPhoto()" class="absolute right-2 text-white/70 hover:text-white bg-black/40 w-9 h-9 rounded-full flex items-center justify-center z-10">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- Footer: Urutan Foto -->
+    <div class="text-center pb-6 text-xs text-slate-400 font-medium" id="lightbox-counter">
+        1 dari 6
+    </div>
+</div>
+            </div>
+
+            <!-- ----------------------------------------------------------------- -->
+            <!-- 8. KAMERA APP (WITH SELFIE VIDEO PREVIEW) -->
+            <!-- ----------------------------------------------------------------- -->
+            <div id="app-camera" class="app-screen absolute inset-0 bg-black hidden flex-col z-20 justify-between">
+                <!-- Camera Viewfinder -->
+                <div class="relative flex-1 bg-slate-900 overflow-hidden flex items-center justify-center">
+                    <video id="camera-video" class="w-full h-full object-cover" autoplay loop muted playsinline>
+                        <source src="Stella_selfie.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute top-3 left-3 bg-black/40 px-2 py-1 rounded-full text-[10px] text-white flex items-center gap-1">
+                        <div class="w-2 h-2 bg-red-500 rounded-full animate-ping"></div> Live Camera
+                    </div>
+                </div>
+                <!-- Shutter Bar -->
+                <div class="p-6 bg-black flex justify-around items-center">
+                    <div onclick="openApp('gallery')" class="w-10 h-10 rounded-lg bg-slate-800 border overflow-hidden cursor-pointer">
+    <img id="camera-preview-thumb" src="" class="w-full h-full object-cover">
+</div>
+                    <button class="w-16 h-16 rounded-full border-4 border-white p-1">
+                        <div class="w-full h-full bg-white rounded-full"></div>
+                    </button>
+                    <button class="w-10 h-10 rounded-full bg-slate-800 text-white flex items-center justify-center">
+                        <i class="fa-solid fa-rotate text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ----------------------------------------------------------------- -->
+            <!-- 9. NOTES APP -->
+            <!-- ----------------------------------------------------------------- -->
+            <div id="app-notes" class="app-screen absolute inset-0 bg-slate-50 hidden flex-col z-20 overflow-y-auto no-scrollbar">
+                <div class="p-4 border-b border-slate-200 bg-white sticky top-0 flex justify-between items-center">
+                    <h1 class="text-xl font-bold text-amber-600">Catatan Stella</h1>
+                    <i class="fa-solid fa-chevron-left text-slate-600" onclick="closeApp()"></i>
+                </div>
+                <div id="notes-list" class="p-4 space-y-3">
+                    <!-- Dynamic Notes Injected -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- IPHONE BOTTOM HOME INDICATOR BAR (Clicking returns to Home Screen) -->
+        <!-- ========================================================================= -->
+        <div class="relative bg-transparent py-2 flex justify-center items-center z-50 cursor-pointer" onclick="closeApp()">
+            <div class="w-32 h-1 bg-white/70 rounded-full shadow-lg"></div>
+        </div>
+    </div>
+
+    <!-- Image Viewer Modal (For Galeri Full View) -->
+    <div id="image-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center p-4" onclick="this.classList.add('hidden')">
+        <img id="modal-img" src="" class="max-w-full max-h-[80vh] rounded-xl object-contain">
+        <p class="text-white text-xs mt-3">Ketuk di mana saja untuk menutup</p>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- JAVASCRIPT & CONFIGURATION (EDIT SEMUA DATA AU DI SINI!) -->
+    <!-- ========================================================================= -->
+    <script>
+        /* 
+         ===========================================================================
+         EDIT DATA AU KANAMU DI OBJECT "CONFIG" DI BAWAH INI!
+         Bisa ganti foto Pinterest, nama, chat WA, postingan Twitter, IG, dll.
+         ===========================================================================
+        */
+        const CONFIG = {
+            // Tokoh Utama (Pemilik HP)
+            user: {
+                name: "Stella Kim",
+                username: "@stel",
+                igHandle: "stella.kim",
+                avatar: "https://i.pinimg.com/736x/7a/11/be/7a11be33854cb79d0b451cceb46a821d.jpg",
+                twitterBanner: "https://i.pinimg.com/1200x/12/e6/99/12e69995bec59b59038ba13416061ec2.jpg"
+            },
+
+            // Pacar Tokoh Utama ("Ian syg")
+            girlfriend: {
+                name: "Ian syg",
+                realName: "Leean Jeong",
+                birthday: "9 Oktober",
+                avatar: "https://i.pinimg.com/736x/c0/4d/0b/c04d0b02945c66ad63788b2429b4cd12.jpg"
+            },
+
+            // Instagram (Sesuai Gambar 1)
+            instagram: {
+                postsCount: 6,
+                followers: "2188",
+                following: "631",
+                highlights: {
+                    ny: "https://i.pinimg.com/736x/9a/98/62/9a9862382b4ffff008cf1334dbd670a3.jpg",
+                    kiss: "https://i.pinimg.com/1200x/df/3b/9d/df3b9d7d3ee5149d0428a3d372ee8406.jpg"
+                },
+                // 6 Foto Grid Instagram
+                gridPhotos: [
+                    "https://i.pinimg.com/1200x/e3/2c/52/e32c52852d789bfb5017ba86e789d6f4.jpg",
+                    "StellaPost.mp4",
+                    "https://i.pinimg.com/736x/06/41/79/064179dd2449e7ebbdabcb18ef38b70a.jpg",
+                    "https://i.pinimg.com/736x/14/a1/58/14a1588929183297424f9451c0b23243.jpg",
+                    "https://i.pinimg.com/736x/1d/60/94/1d6094d9070842f92b852d3523ba140b.jpg",
+                    "https://i.pinimg.com/736x/e5/57/4f/e5574fad6de4c2ea4a91e0fd01a63c60.jpg"
+                ]
+            },
+
+            // Twitter / X (Sesuai Gambar 5)
+            twitter: {
+                tweetText: "Gemes bgt pacar aku😊",
+                tweetImage: "https://i.pinimg.com/736x/11/1d/9e/111d9ee0e9db2ef62700f03dd918719c.jpg"
+            },
+
+            // WhatsApp List (Sesuai Gambar 2)
+            whatsappList: [
+                { id: "jiwoo", name: "jiu ketos", msg: "eh kabarin gua dlu klo udh ya", time: "15:09", status: "terakhir dilihat hari ini pukul 15.15", ticks: "", unread: true, avatar: "https://i.pinimg.com/736x/8e/47/a4/8e47a4dadb8016f5f81e6a61bd1aacd6.jpg" },
+                { id: "yuha", name: "Yuha", msg: "apaan?", time: "09:41", status: "terakhir dilihat hari ini pukul 10.25", ticks: "", unread: false, avatar: "https://i.pinimg.com/736x/fe/dd/dc/fedddccd4a8ed54bf968b1605b39ab4e.jpg" },
+                { id: "lemen", name: "lemen", msg: "it's okay", time: "07:28", ticks: "✓✓", blue: true, unread: false, avatar: "https://i.pinimg.com/736x/66/1e/25/661e25bdc1e7e4e8b49e59c7d167be8e.jpg" },
+                { id: "papi", name: "Papi", msg: "udah papi tf sayang", time: "11:23", status: "terakhir dilihat hari ini pukul 11.25", ticks: "", unread: false, avatar: "https://i.pinimg.com/1200x/97/f3/0d/97f30db697da9d4254d7a79d4f86c305.jpg" },
+                { id: "mamih", name: "Mamih", msg: "iya mih", time: "21:22", status: "terakhir dilihat kemarin pukul 21.02", ticks: "✓✓", unread: false, avatar: "https://i.pinimg.com/1200x/9f/7d/d3/9f7dd3cec5b516bfbec70572bace7638.jpg" },
+                { id: "ian", name: "Ian syg", msg: "syg lagi apa?", time: "15:11", ticks: "", unread: true, avatar: "https://i.pinimg.com/736x/c0/4d/0b/c04d0b02945c66ad63788b2429b4cd12.jpg" }
+            ],
+
+            // CHAT INTERAKTIF LIVE WA (Skenario Percakapan AU antara Stella & "Ian syg")
+            // Edit alur obrolan di sini! sender: 'user' (Stella) atau 'girlfriend' ('Ian syg')
+            chatScript: [
+                { sender: "girlfriend", text: "syg lagi apa?", time: "15:11" },
+                { sender: "user", text: "lagi main syg, why you asking?", time: "15:12" },
+                { sender: "girlfriend", text: "lagi dimana? kangen tauu", time: "15:12" },
+                { sender: "user", text: "lagi di cafe nih, ada yuha sama jiwoo", time: "15:12" },
+                { sender: "girlfriend", text: "coba fotoin dong kak, mau liat pacar aku yg cantik😆", time: "15:13" },
+                { sender: "user", text: "gombal mlu ya kamuuu", time: "15:13", type: "image", imgUrl: "https://i.pinimg.com/736x/40/51/0d/40510d518aad0a5f0303fc30b1302b03.jpg" },
+                { sender: "girlfriend", text: "CANTIK BANGET PACAR AKUU OMG❤️❤️", time: "15:14" },
+                { sender: "girlfriend", text: "malem ini aku ke rumah kakak ya? bnrn kangen bgt inimah", time: "15:14" },
+                { sender: "girlfriend", text: "mau kiss", time: "15:14" },
+                { sender: "user", text: "nakal ya kamu, siapa si yg ajarin??", time: "15:15" },
+                { sender: "girlfriend", text: "lagian kakak menggoda bgt sii", time: "15:15" }
+            ],
+
+            // Galeri Foto Kenangan AU
+            galleryPhotos: [
+                { url: "https://i.pinimg.com/736x/77/cb/d2/77cbd2b2a76998bce422b5d437e64d13.jpg", date: "21 Okt 2026", time: "18:30" },
+                { url:"https://i.pinimg.com/736x/23/67/8a/23678a25c850ad51bf1e69fbdf0566f6.jpg", date: "9 Okt 2026", time: "18:30" },
+                { url: "https://i.pinimg.com/736x/12/ec/fc/12ecfc075e4ec88200d02227fc220c32.jpg", date: "1 Okt 2026", time: "18:30" },
+                { url: "https://i.pinimg.com/736x/2b/c7/61/2bc76146cf2621f4c9da27d7e19a412c.jpg", date: "12 June 2026", time: "18:30" },
+                { url: "https://i.pinimg.com/736x/23/47/38/2347382395f750340a63d40274c2a62a.jpg", date: "2 June 2026", time: "18:30" },
+                { url: "https://i.pinimg.com/736x/c5/c4/8b/c5c48b5b5ebaee8dd731aac4b07598e9.jpg", date: "28 Dec 2025", time: "19:22" }
+            ],
+
+            // Catatan Notes
+            notesList: [
+                { title: "Rencana Ultah Pacar (9 Okt)", date: "05/10/2026", content: "1. Beli cake custom motif kucing mirip aru.\n2. Siapin kado kemeja hitam.\n3. Surprise party jam 00.00!" },
+                { title: "Judul Lagu Favorit Stella & Leean", date: "01/10/2026", content: "1. About You - The 1975\n2. Perfect - Ed Sheeran\n3. Mark Lee - Child" }
+            ]
+        };
+
+        /* 
+         ===========================================================================
+         SYSTEM LOGIC & STATE (TIDAK PERLU DIUBAH KECUALI PAHAM JS)
+         ===========================================================================
+        */
+        let scriptIndex = 0; // Tracking live chat progress
+
+        // Initialize UI with CONFIG data on DOM ready
+        window.onload = function() {
+            initClock();
+            loadProfileData();
+            renderWhatsAppList();
+            renderInstagramGrid();
+            renderGalleryGrid();
+            renderNotesList();
+        };
+
+        // Real-time Status Bar Clock
+        function initClock() {
+            function updateClock() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                document.getElementById('status-clock').innerText = `${hours}:${minutes}`;
+            }
+            updateClock();
+            setInterval(updateClock, 10000);
+        }
+
+        // Populate Config Data to HTML
+        function loadProfileData() {
+            // IG
+            document.getElementById('ig-handle-title').innerText = CONFIG.user.igHandle;
+            document.getElementById('ig-avatar').src = CONFIG.user.avatar;
+            document.getElementById('ig-posts-count').innerText = CONFIG.instagram.postsCount;
+            document.getElementById('ig-followers-count').innerText = CONFIG.instagram.followers;
+            document.getElementById('ig-following-count').innerText = CONFIG.instagram.following;
+            document.getElementById('ig-hl1-img').src = CONFIG.instagram.highlights.ny;
+            document.getElementById('ig-hl2-img').src = CONFIG.instagram.highlights.kiss;
+
+            // Twitter
+            document.getElementById('tw-avatar').src = CONFIG.user.avatar;
+            document.getElementById('tw-banner-img').src = CONFIG.user.twitterBanner;
+            document.getElementById('tw-name').innerText = CONFIG.user.name.toLowerCase().replace(" ", "_");
+            document.getElementById('tw-username').innerText = CONFIG.user.username;
+            document.getElementById('tw-tweet-avatar').src = CONFIG.user.avatar;
+            document.getElementById('tw-tweet-name').innerText = CONFIG.user.name.toLowerCase().replace(" ", "_");
+            document.getElementById('tw-tweet-user').innerText = CONFIG.user.username;
+            document.getElementById('tw-tweet-text').innerText = CONFIG.twitter.tweetText;
+            document.getElementById('tw-tweet-img').src = CONFIG.twitter.tweetImage;
+
+            // YouTube & Camera Preview
+            document.getElementById('yt-user-avatar').src = CONFIG.user.avatar;
+            document.getElementById('camera-preview-thumb').src = CONFIG.galleryPhotos[0];
+        }
+
+        // Navigation Controller
+        function openApp(appId) {
+            document.querySelectorAll('.app-screen').forEach(app => app.classList.add('hidden'));
+            const target = document.getElementById(`app-${appId}`);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('flex');
+                if (appId === 'camera') {
+            const camVid = document.getElementById('camera-video');
+            if (camVid) {
+                camVid.muted = true;
+                camVid.play();
+            }
+        }
+    }
+}
+
+        function closeApp() {
+            // Matikan & bersihkansemua video biar suaranya gak bocor ke Home Screen
+    closeIgLightbox();
+    document.querySelectorAll('video').forEach(video => {
+        video.pause();
+        video.currentTime = 0;
+    });
+            document.querySelectorAll('.app-screen').forEach(app => app.classList.add('hidden'));
+            document.getElementById('app-home').classList.remove('hidden');
+        }
+
+// Variable pembantu biar room chat Ian gak ke-reset pas dibuka ulang
+let isIanChatLoaded = false;
+
+// Function Update Notif Merah di Home Screen
+function updateWaHomeBadge() {
+    const badgeEl = document.getElementById('wa-home-badge');
+    if (!badgeEl) return;
+    const unreadCount = CONFIG.whatsappList.filter(item => item.unread).length;
+    if (unreadCount > 0) {
+        badgeEl.innerText = unreadCount;
+        badgeEl.style.display = 'flex';
+    } else {
+        badgeEl.style.display = 'none';
+    }
+}
+
+// WhatsApp Chat List Renderer
+function renderWhatsAppList() {
+    // Otomatis update jam di chatScript biar sesuai jam realtime saat ini
+    const now = new Date();
+    const jamSekarang = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+    // Bikin semua gelembung chat serentak pake jam realtime sekarang
+    CONFIG.chatScript.forEach((item) => {
+        item.time = jamSekarang;
+    });
+    const ian = CONFIG.whatsappList.find(c => c.id === 'ian');
+    if (ian) ian.time = jamSekarang;
+    const container = document.getElementById('wa-chat-items');
+    if (!container) return;
+    container.innerHTML = '';
+
+    // Otomatis update notif merah di Home Screen
+    updateWaHomeBadge();
+
+    CONFIG.whatsappList.forEach(chat => {
+        const item = document.createElement('div');
+        item.className = 'px-4 py-3 flex items-center justify-between hover:bg-slate-50 cursor-pointer active:bg-slate-100 transition-colors border-b border-slate-100';
+        item.onclick = () => openWaChat(chat);
+
+        // Centang dua biru / abu-abu
+        let ticksHtml = '';
+        if (chat.blue) {
+            ticksHtml = `<i class="fa-solid fa-check-double text-blue-500 text-[11px] mr-1"></i>`;
+        } else if (chat.ticks) {
+            ticksHtml = `<i class="fa-solid fa-check-double text-slate-400 text-[11px] mr-1"></i>`;
+        }
+
+        // Lingkaran hijau unread
+        let unreadBadge = chat.unread 
+            ? `<span class="bg-emerald-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">1</span>` 
+            : '';
+
+        item.innerHTML = `
+            <div class="flex items-center gap-3">
+                <img src="${chat.avatar}" class="w-12 h-12 rounded-full object-cover">
+                <div>
+                    <h3 class="font-bold text-sm text-slate-900">${chat.name}</h3>
+                    <p class="text-xs text-slate-500 flex items-center">${ticksHtml} <span>${chat.msg}</span></p>
+                </div>
+            </div>
+            <div class="flex flex-col items-end gap-1">
+                <span class="text-[10px] ${chat.unread ? 'text-emerald-600 font-bold' : 'text-slate-400'}">${chat.time}</span>
+                ${unreadBadge}
+            </div>
+        `;
+        container.appendChild(item);
+    });
+}
+
+// WhatsApp Live Chat Room Controller
+function openWaChat(chatItem) {
+    window.currentChatId = chatItem.id;
+    // 1. Hilangkan unread & update notif
+    chatItem.unread = false;
+    renderWhatsAppList();
+
+    // 2. Buka layar roomchat
+    document.getElementById('wa-list-view').classList.add('hidden');
+    document.getElementById('wa-room-view').classList.remove('hidden');
+    document.getElementById('wa-room-view').classList.add('flex');
+
+    document.getElementById('wa-room-avatar').src = chatItem.avatar;
+    document.getElementById('wa-room-name').innerText = chatItem.name;
+
+    const statusEl = document.getElementById('wa-room-status');
+
+    // 3. Khusus roomchat Ian syg
+    if (chatItem.id === 'ian' || chatItem.id === 'Ian syg') {
+        if (statusEl) statusEl.innerText = 'online';
+        renderWaScriptMessages(); // Muat ulang semua chat Ian sampai balasan terakhir tanpa ketimpa
+    } else {
+        // Kalo kontak lain, ubah status jadi "terakhir dilihat..."
+        if (statusEl) {
+            statusEl.innerText = chatItem.status || `terakhir dilihat hari ini pukul ${chatItem.time}`;
+        }
+        // Roomchat kontak lain
+        const msgContainer = document.getElementById('wa-messages-container');
+        msgContainer.innerHTML = `
+            <div class="text-center my-2"><span class="bg-white/80 px-2 py-1 rounded-md text-[10px] text-slate-500 shadow-sm">Pesan terenkripsi secara end-to-end</span></div>
+        `;
+        if (chatItem.ticks) {
+            appendBubble({ sender: 'user', text: chatItem.msg, time: chatItem.time });
+        } else {
+            appendBubble({ sender: 'girlfriend', text: chatItem.msg, time: chatItem.time });
+        }
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+}
+
+function closeWaChat() {
+    document.getElementById('wa-room-view').classList.add('hidden');
+    document.getElementById('wa-room-view').classList.remove('flex');
+    document.getElementById('wa-list-view').classList.remove('hidden');
+}
+
+// Render Ulang Seluruh Chat Script Ian
+function renderWaScriptMessages() {
+    const container = document.getElementById('wa-messages-container');
+    if (!container) return;
+    container.innerHTML = `
+        <div class="text-center my-2"><span class="bg-white/80 px-2 py-1 rounded-md text-[10px] text-slate-500 shadow-sm">Pesan terenkripsi secara end-to-end</span></div>
+    `;
+    
+    for (let i = 0; i <= scriptIndex; i++) {
+        const item = CONFIG.chatScript[i];
+        if (item) appendBubble(item);
+    }
+    container.scrollTop = container.scrollHeight;
+    updateInputPlaceholder();
+}
+
+function appendBubble(item) {
+    const container = document.getElementById('wa-messages-container');
+    if (!container) return;
+    const now = new Date();
+    item.time = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    const isUser = item.sender === 'user';
+    const bubble = document.createElement('div');
+    bubble.className = `flex ${isUser ? 'justify-end' : 'justify-start'} animate-pop mb-2`;
+
+    let bodyContent = `<p class="text-xs text-slate-800 leading-relaxed">${item.text}</p>`;
+    if (item.type === 'image') {
+        bodyContent = `
+            <img src="${item.imgUrl}" class="rounded-lg max-w-full h-44 object-cover mb-1">
+            <p class="text-xs text-slate-800">${item.text || ''}</p>
+        `;
+    }
+
+    bubble.innerHTML = `
+        <div class="${isUser ? 'bg-[#d9fdd3]' : 'bg-white'} p-2.5 rounded-xl shadow-sm max-w-[80%] relative">
+            ${bodyContent}
+            <div class="flex justify-end items-center gap-1 text-[9px] text-slate-400 mt-1">
+                <span>${item.time}</span>
+                ${isUser ? '<i class="fa-solid fa-check-double text-blue-500"></i>' : ''}
+            </div>
+        </div>
+    `;
+
+    container.appendChild(bubble);
+    container.scrollTop = container.scrollHeight;
+}
+
+        // GUIDED LIVE CHAT INTERACTION LOGIC
+        function handleChatInputClick() {
+            // Kunci: Jangan bisa diklik kalau bukan chat Ian!
+    if (window.currentChatId !== 'ian' && window.currentChatId !== 'Ian syg') return;
+
+            const nextItem = CONFIG.chatScript[scriptIndex + 1];
+            if (nextItem && nextItem.sender === 'user') {
+                document.getElementById('wa-chat-input').value = nextItem.text;
+            }
+        }
+
+        function sendGuidedMessage() {
+            // Kunci: Jangan bisa terkirim kalau bukan chat Ian!
+    if (window.currentChatId !== 'ian' && window.currentChatId !== 'Ian syg') return;
+    
+    const input = document.getElementById('wa-chat-input');
+    const nextIndex = scriptIndex + 1;
+    const nextItem = CONFIG.chatScript[nextIndex];
+
+    if (nextItem && nextItem.sender === 'user') {
+        scriptIndex = nextIndex;
+        appendBubble(nextItem);
+        if (input) input.value = '';
+
+        // Panggil balasan dari Ian syg
+        checkAndSendGirlfriendReply();
+    } else if (input && input.value.trim() !== '') {
+        appendBubble({ sender: 'user', text: input.value, time: '15:16' });
+        input.value = '';
+    }
+}
+
+function checkAndSendGirlfriendReply() {
+    const girlfriendNext = CONFIG.chatScript[scriptIndex + 1];
+    if (girlfriendNext && girlfriendNext.sender === 'girlfriend') {
+        document.getElementById('wa-room-status').innerText = 'sedang mengetik...';
+        setTimeout(() => {
+            scriptIndex++;
+            document.getElementById('wa-room-status').innerText = 'online';
+            appendBubble(girlfriendNext);
+            updateInputPlaceholder();
+            
+            // Cek lagi apakah ada chat beruntun dari Ian
+            checkAndSendGirlfriendReply();
+        }, 3000); // 3000 = 3 detik
+    }
+}
+
+
+        function updateInputPlaceholder() {
+            const input = document.getElementById('wa-chat-input');
+            const nextItem = CONFIG.chatScript[scriptIndex + 1];
+            if (nextItem && nextItem.sender === 'user') {
+                input.placeholder = "Sentuh / Ketik untuk membalas...";
+            } else {
+                input.placeholder = "Ketik pesan...";
+            }
+        }
+
+let currentIgIndex = 0;
+
+// Update Foto Thumbnail Kamera dari Galeri
+function updateCameraThumbnail() {
+    const cameraThumb = document.getElementById('camera-preview-thumb');
+    if (cameraThumb && CONFIG.galleryPhotos && CONFIG.galleryPhotos.length > 0) {
+        const firstPhoto = CONFIG.galleryPhotos[0];
+        cameraThumb.src = typeof firstPhoto === 'object' ? firstPhoto.url : firstPhoto;
+    }
+}
+
+// Instagram Grid Renderer (Video diam di grid, muter pas diklik layar penuh)
+
+// Render Grid Instagram
+function renderInstagramGrid() {
+    const container = document.getElementById('ig-photo-grid');
+    if (!container) return;
+    container.innerHTML = '';
+
+    CONFIG.instagram.gridPhotos.forEach((photoUrl, idx) => {
+        const item = document.createElement('div');
+        item.className = 'aspect-square relative overflow-hidden bg-slate-200 cursor-pointer';
+        item.onclick = () => openIgLightbox(idx);
+
+        const isVideo = photoUrl.toLowerCase().endsWith('.mp4') || photoUrl.toLowerCase().includes('.mp4');
+
+        if (isVideo) {
+            item.innerHTML = `
+                <video src="${photoUrl}#t=0.1" class="w-full h-full object-cover" preload="metadata"></video>
+                <i class="fa-solid fa-clapperboard absolute top-2 right-2 text-white drop-shadow"></i>
+            `;
+        } else {
+            item.innerHTML = `
+                <img src="${photoUrl}" class="w-full h-full object-cover">
+                ${idx === 0 ? '<i class="fa-solid fa-clone absolute top-2 right-2 text-white drop-shadow"></i>' : ''}
+            `;
+        }
+        container.appendChild(item);
+    });
+}
+
+// Buka Postingan IG Fullscreen
+function openIgLightbox(index) {
+    currentIgIndex = index;
+    const lightbox = document.getElementById('ig-lightbox');
+    if (lightbox) {
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+    }
+    updateIgLightboxContent();
+}
+
+// Tutup Postingan IG Fullscreen
+function closeIgLightbox() {
+    const lightbox = document.getElementById('ig-lightbox');
+    if (lightbox) {
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+        const mediaContainer = document.getElementById('ig-modal-media-container');
+        if (mediaContainer) mediaContainer.innerHTML = '';
+    }
+}
+
+// Render Isi Postingan IG
+function updateIgLightboxContent() {
+    const url = CONFIG.instagram.gridPhotos[currentIgIndex];
+    const mediaContainer = document.getElementById('ig-modal-media-container');
+    if (!url || !mediaContainer) return;
+
+    const isVideo = url.toLowerCase().endsWith('.mp4') || url.toLowerCase().includes('.mp4');
+
+    if (isVideo) {
+        mediaContainer.innerHTML = `
+            <video src="${url}" class="w-full h-auto max-h-[500px] object-contain bg-black" autoplay loop controls playsinline></video>
+        `;
+    } else {
+        mediaContainer.innerHTML = `
+            <img src="${url}" class="w-full h-auto max-h-[500px] object-contain">
+        `;
+    }
+}
+
+function nextIgPost() {
+    currentIgIndex = (currentIgIndex + 1) % CONFIG.instagram.gridPhotos.length;
+    updateIgLightboxContent();
+}
+
+function prevIgPost() {
+    currentIgIndex = (currentIgIndex - 1 + CONFIG.instagram.gridPhotos.length) % CONFIG.instagram.gridPhotos.length;
+    updateIgLightboxContent();
+}
+        let currentGalleryIndex = 0;
+let touchStartX = 0;
+let touchEndX = 0;
+
+// Gallery Grid Renderer
+function renderGalleryGrid() {
+    updateCameraThumbnail();
+
+    const container = document.getElementById('gallery-grid');
+    if (!container) return;
+    container.innerHTML = '';
+
+    CONFIG.galleryPhotos.forEach((item, index) => {
+        const photoDiv = document.createElement('div');
+        photoDiv.className = 'aspect-square bg-slate-800 relative overflow-hidden cursor-pointer group rounded-lg shadow-sm active:scale-95 transition-transform';
+        photoDiv.onclick = () => openGalleryLightbox(index);
+
+        const imgUrl = typeof item === 'object' ? item.url : item;
+        const imgDate = typeof item === 'object' ? item.date : '';
+
+        photoDiv.innerHTML = `
+            <img src="${imgUrl}" class="w-full h-full object-cover">
+            ${imgDate ? `<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-1 text-center"><p class="text-[9px] text-white font-medium">${imgDate}</p></div>` : ''}
+        `;
+        container.appendChild(photoDiv);
+    });
+
+    setupGallerySwipe();
+}
+
+// Buka Foto Fullscreen
+function openGalleryLightbox(index) {
+    currentGalleryIndex = index;
+    updateLightboxContent();
+    const lightbox = document.getElementById('gallery-lightbox');
+    if (lightbox) {
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+    }
+}
+
+// Tutup Foto Fullscreen
+function closeGalleryLightbox() {
+    const lightbox = document.getElementById('gallery-lightbox');
+    if (lightbox) {
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+    }
+}
+
+// Update Foto, Tanggal & Jam saat Digeser
+function updateLightboxContent() {
+    const item = CONFIG.galleryPhotos[currentGalleryIndex];
+    if (!item) return;
+
+    const imgUrl = typeof item === 'object' ? item.url : item;
+    const imgDate = typeof item === 'object' ? item.date : '';
+    const imgTime = typeof item === 'object' ? item.time : '';
+
+    document.getElementById('lightbox-img').src = imgUrl;
+    document.getElementById('lightbox-date').innerText = imgDate;
+    document.getElementById('lightbox-time').innerText = imgTime;
+    document.getElementById('lightbox-counter').innerText = `${currentGalleryIndex + 1} dari ${CONFIG.galleryPhotos.length}`;
+}
+
+// Foto Berikutnya
+function nextGalleryPhoto() {
+    if (currentGalleryIndex < CONFIG.galleryPhotos.length - 1) {
+        currentGalleryIndex++;
+    } else {
+        currentGalleryIndex = 0;
+    }
+    updateLightboxContent();
+}
+
+// Foto Sebelumnya
+function prevGalleryPhoto() {
+    if (currentGalleryIndex > 0) {
+        currentGalleryIndex--;
+    } else {
+        currentGalleryIndex = CONFIG.galleryPhotos.length - 1;
+    }
+    updateLightboxContent();
+}
+
+// Deteksi Usapan Layar (Swipe di HP)
+function setupGallerySwipe() {
+    const swipeArea = document.getElementById('lightbox-swipe-area');
+    if (!swipeArea) return;
+
+    swipeArea.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    swipeArea.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleGallerySwipe();
+    }, false);
+}
+
+function handleGallerySwipe() {
+    const swipeThreshold = 40;
+    if (touchEndX < touchStartX - swipeThreshold) {
+        nextGalleryPhoto();
+    }
+    if (touchEndX > touchStartX + swipeThreshold) {
+        prevGalleryPhoto();
+    }
+}
+
+        // Notes Renderer
+        function renderNotesList() {
+            const container = document.getElementById('notes-list');
+            container.innerHTML = '';
+            CONFIG.notesList.forEach(note => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm space-y-1';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-sm text-slate-900">${note.title}</h3>
+                        <span class="text-[10px] text-slate-400">${note.date}</span>
+                    </div>
+                    <p class="text-xs text-slate-600 whitespace-pre-line leading-relaxed">${note.content}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Update Foto Thumbnail Kamera dari Galeri
+function updateCameraThumbnail() {
+    const cameraThumb = document.getElementById('camera-preview-thumb');
+    if (cameraThumb && CONFIG.galleryPhotos && CONFIG.galleryPhotos.length > 0) {
+        const firstPhoto = CONFIG.galleryPhotos[0];
+        cameraThumb.src = typeof firstPhoto === 'object' ? firstPhoto.url : firstPhoto;
+    }
+}
+
+    // Otomatis ubah jam chat WhatsApp sesuai jam realtime saat web dibuka
+function initRealtimeWa() {
+    const now = new Date();
+
+    // Fungsi bikin format jam & menit (misal 14:05)
+    function getTimeAgo(minusMinutes = 0) {
+        const d = new Date(now.getTime() - minusMinutes * 60000);
+        const hours = String(d.getHours()).padStart(2, '0');
+        const minutes = String(d.getMinutes()).padStart(2, '0');
+        return `${hours}:${minutes}`;
+    }
+
+    // Bikin jam chat Ian & Stella mundur berurutan dari jam sekarang
+    if (CONFIG.whatsappScript && CONFIG.whatsappScript.length > 0) {
+        const total = CONFIG.whatsappScript.length;
+        CONFIG.whatsappScript.forEach((item, index) => {
+            // Pesan terakhir = jam sekarang, pesan awal mundur beberapa menit
+            const minsAgo = Math.floor((total - 1 - index) / 1.5);
+            item.time = getTimeAgo(minsAgo);
+        });
+    }
+
+    // Update jam di daftar list chat WhatsApp (Ian syg)
+    if (CONFIG.whatsappList) {
+        const ian = CONFIG.whatsappList.find(c => c.id === 'ian');
+        if (ian && CONFIG.whatsappScript.length > 0) {
+            ian.time = CONFIG.whatsappScript[CONFIG.whatsappScript.length - 1].time;
+        }
+    }
+}
+
+    </script>
+</body>
+</html>
